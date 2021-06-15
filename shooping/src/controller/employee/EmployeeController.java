@@ -37,18 +37,33 @@ public class EmployeeController extends HttpServlet
 					new EmployeeJoinPage();
 			action.empInsert(request);//페이지 컨트롤러로 request값을 전달하기 위한 메소드
 			response.sendRedirect("empList.em");
+		}else if(command.equals("/empInfo.em")) {
+			EmployeeInfoPage action = new EmployeeInfoPage();
+			action.empInfo(request);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("employee/employeeInfo.jsp");
+			dispatcher.forward(request, response);
+		}else if(command.equals("/empModify.em")) {
+			EmployeeInfoPage action = new EmployeeInfoPage();
+			action.empInfo(request);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("employee/employeeModify.jsp");
+			dispatcher.forward(request, response);
+		}else if(command.equals("/empModifyOk.em")) {//주소가 있어도 꼭 페이지가 열릴필요는 없다.
+			EmployeeModifyPage action = new EmployeeModifyPage();
+			action.empModify(request);
+			response.sendRedirect("empList.em");//처리 후 지정 페이지로 이동
+		}else if(command.equals("/empDelete.em")) {
+			EmployeeDeletePage action = new EmployeeDeletePage();
+			action.empDelete(request);
+			response.sendRedirect("empList.em");
 		}
-		
 	}
 	@Override
 	protected void doGet(HttpServletRequest req, 
 			HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doProcess(req, resp);
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doProcess(req, resp);
 	}
 }
