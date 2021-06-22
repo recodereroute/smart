@@ -14,6 +14,7 @@ public class GoodsController extends HttpServlet
 	
 	public void doProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
+//		request.setCharacterEncoding("utf-8"); //이런식으로 맨 위에 선언하고 시작하면 안되는지?
 		String RequestURI = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		String command = RequestURI.substring(contextPath.length());
@@ -72,6 +73,28 @@ public class GoodsController extends HttpServlet
 			GoodsBuyPage action = new GoodsBuyPage();
 			action.goodsBuy(request);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("goods/order.jsp");
+			dispatcher.forward(request, response);
+		}else if(command.equals("/goodsOrder.gd")) {
+			request.setCharacterEncoding("utf-8");//받는값은 request, 보내는 값은 response
+			GoodsOrderPage action = new GoodsOrderPage();
+			String [] purchaseNum = action.goodsOrder(request).split(",");
+			response.sendRedirect("paymentOk.gd?purchaseNum=" + purchaseNum[0] 
+					+ "&purchaseTotPrice=" + purchaseNum[1]);
+		}else if(command.equals("/purchaseCon.gd")) {
+			PurchaseListConPage action = new PurchaseListConPage();
+			action.purchaseList(request);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("goods/purchaseCon.jsp");
+			dispatcher.forward(request, response);
+		}else if(command.equals("/paymentOk.gd")) {
+			request.setAttribute("purchaseNum", request.getParameter("purchaseNum"));
+			request.setAttribute("purchaseTotPrice", request.getParameter("purchaseTotPrice"));
+			//expression language - ${}는 속성만 받고 parameter는 받지못함
+			RequestDispatcher dispatcher = request.getRequestDispatcher("goods/payment.jsp");
+			dispatcher.forward(request, response);
+		}else if(command.equals("/doPayment.gd")) {
+			PaymentPage action = new PaymentPage();
+			action.payment(request);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("goods/buyFinished.jsp");
 			dispatcher.forward(request, response);
 		}
 	}

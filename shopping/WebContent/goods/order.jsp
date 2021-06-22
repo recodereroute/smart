@@ -10,9 +10,9 @@
 <body>
 주문서
 <hr />
-
+<p>
 1.	주문 상품<br />
-<form action = "#" method="post">
+<form action = "goodsOrder.gd" method="post">
 <table width = "600" border = 1>
 		<tr><td colspan = "2">상품 정보</td>
 			<td>적용금액</td><td>판매자</td><td>배송비</td></tr>
