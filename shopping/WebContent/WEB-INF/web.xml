@@ -49,4 +49,13 @@
   	<servlet-name>goods</servlet-name>
   	<url-pattern>*.gd</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>venta</servlet-name>
+  	<servlet-class>controller.venta.VentaController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>venta</servlet-name>
+  	<url-pattern>*.vnt</url-pattern>
+  </servlet-mapping>
 </web-app>

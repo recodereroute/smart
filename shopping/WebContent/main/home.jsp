@@ -45,6 +45,7 @@
 		<a href="empMyPage.em">마이페이지</a>
 		<a href = "goodsList.gd">상품등록</a>
 		<a href ="#">공지사항</a>
+		<a href="venta.vnt">판매현황</a>
 	
 	<!-- 관리자 -->
 	<br />

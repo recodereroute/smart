@@ -9,11 +9,77 @@ import model.DTO.OrderList;
 import model.DTO.PaymentDTO;
 import model.DTO.ProductCartDTO;
 import model.DTO.ProductDTO;
+import model.DTO.ProductReviewDTO;
 import model.DTO.PurchaseDTO;
 
 public class GoodsDAO extends DataBaseInfo{
 	final String COLUMNS = "PROD_NUM, PROD_NAME, PROD_PRICE, PROD_IMAGE, PROD_DETAIL, PROD_CAPACITY, PROD_SUPPLYER"
 			+ ", PROD_DEL_FEE, RECOMMEND, EMPLOYEE_ID, CTGR"; 
+	
+	public void reviewUpdate(ProductReviewDTO dto) {
+		sql = " update review "
+			+ " set REVIEW_CONTENT = ?"
+			+ " where PURCHASE_NUM = ? and PROD_NUM = ?";
+		getConnect();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getReviewContent());
+			pstmt.setString(2, dto.getPurchaseNum());
+			pstmt.setString(3, dto.getProdNum());
+			int i = pstmt.executeUpdate();
+			System.out.println(i + "개가 수정되었습니다.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}
+	public void reviewSelect(ProductReviewDTO dto) {
+		sql = " select PURCHASE_NUM, PROD_NUM, REVIEW_DATE, "
+			+ " REVIEW_CONTENT, REVIEW_IMG "
+			+ " from review "
+			+ " where PURCHASE_NUM = ? and PROD_NUM = ?";
+			getConnect();
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, dto.getPurchaseNum());
+				pstmt.setString(2, dto.getProdNum());
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					dto.setProdNum(rs.getString("prod_Num"));
+					dto.setPurchaseNum(rs.getString("purchase_Num"));
+					dto.setReviewContent(rs.getString("review_Content"));
+					dto.setReviewDate(rs.getString("review_Date"));
+					dto.setReviewImg(rs.getString("review_Img"));
+					System.out.println(rs.getString("review_Content"));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				close();
+			}
+	}
+	
+	public void reviewInsert(ProductReviewDTO dto) {
+		sql = "insert into review(PURCHASE_NUM, PROD_NUM,REVIEW_DATE,"
+			+ " REVIEW_CONTENT, REVIEW_IMG ) "
+			+ " values(?,?,sysdate,?,?)";
+		getConnect();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getPurchaseNum());
+			pstmt.setString(2, dto.getProdNum());
+			pstmt.setString(3, dto.getReviewContent());
+			pstmt.setString(4, dto.getReviewImg());
+			int i = pstmt.executeUpdate();
+			System.out.println(i + "개가 등록되었습니다.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+	}
 	
 	public void payment(PaymentDTO dto) {
 		//날짜 + 구매번호 -> 매일 100001번부터 시작
@@ -48,9 +114,13 @@ public class GoodsDAO extends DataBaseInfo{
 		sql = 	" select  p2.purchase_date, p4.payment_appr_num, p1.prod_num, " + 
 				"        p2.purchase_num, p1.prod_name, " + 
 				"        p1.prod_supplyer, p2.purchase_tot_price, p1.prod_image " + 
-				" from products p1, purchase p2, purchase_list p3, payment p4 " + 
+				" 		 , review_content "+
+				" from products p1, purchase p2, purchase_list p3, payment p4 " +
+				" , review r " + 
 				" where p2.purchase_num = p3.purchase_num and p1.prod_num = p3.prod_num " + 
-				" and p2.purchase_num = p4.purchase_num(+) and p2.mem_id = ? " + 
+				" and p2.purchase_num = p4.purchase_num(+) " +
+				" and p2.purchase_num = r.purchase_num(+) "+
+				" and p2.mem_id = ? " + 
 				" order by purchase_num desc";
 		getConnect();
 		try {
@@ -67,6 +137,7 @@ public class GoodsDAO extends DataBaseInfo{
 				dto.setPurchaseDate(rs.getString("purchase_date"));
 				dto.setPurchaseTotPrice(rs.getString("purchase_tot_price"));
 				dto.setPurchaseNum(rs.getString("purchase_num"));
+				dto.setReviewContent(rs.getString("review_Content"));
 				list.add(dto);
 			}
 		} catch (SQLException e) {
