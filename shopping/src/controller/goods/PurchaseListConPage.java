@@ -15,7 +15,6 @@ public class PurchaseListConPage {
 		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo");
 		String memId = authInfo.getUserId();
 		GoodsDAO dao = new GoodsDAO();
-		dao.orderList(memId);
 		List<OrderList> list = dao.orderList(memId);
 		request.setAttribute("list", list);
 	}

@@ -10,9 +10,9 @@ import model.DTO.ClientSaleDTO;
 public class ClientSalesPage {
 	public void clientSale(HttpServletRequest request) {
 		String memId = request.getParameter("memId");
-//		if(memId.trim() == "") {
-//			memId = null;
-//		}
+		if(memId == "") {
+			memId = null;
+		}
 		SalesDAO dao = new SalesDAO();
 		List<ClientSaleDTO> list = dao.salesList(memId);
 		request.setAttribute("list", list);

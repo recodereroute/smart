@@ -43,6 +43,29 @@ public class MemberDAO {
 						catch (SQLException e) {}
 	}
 	
+	public void idFind(MemberDTO dto) {
+		sql = " select mem_id, mem_name from member "
+			+ " where mem_address = ? and mem_phone = ? and mem_email = ?";
+		getConnect();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getMemAddress());
+			pstmt.setString(2, dto.getMemPhone());
+			pstmt.setString(3, dto.getMemEmail());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dto.setMemId(rs.getString(1));
+				dto.setMemName(rs.getString(2));
+				//dto로 받은건 따로 리턴해줄 필요없다.
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+	}
+	
 	public MemberDTO memDetail(String memId) {
 		MemberDTO dto = new MemberDTO();
 		sql = " select " + COLUMNS + " from member where mem_id = ? ";

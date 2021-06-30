@@ -64,48 +64,48 @@
 <form action="memSujungOk.mem" method="post" name="frm"> 
 	<table border = 1 align="center">
 		<tr><td>아이디</td>
-			<td> ${dto.memId } </td></tr>
+			<td> ${emp.memId } </td></tr>
 		<tr><td>비밀번호</td>
 			<td>
 				<input type = "password" name = "memPw" />
 				<span>${pwFail }</span>
 			</td></tr>
 		<tr><td>이름</td>
-			<td> ${dto.memName }  </td></tr>
+			<td> ${emp.memName }  </td></tr>
 		<tr><td>우편번호</td>
 			<td><input type="text" name="postNumber" 
-			id="sample4_postcode" value="${dto.postNumber }"></td></tr>
+			id="sample4_postcode" value="${emp.postNumber }"></td></tr>
 		<tr><td>주소</td>
 			<td><input type="text" name="memAddress" 
 				id="sample4_roadAddress" 
-				value="${dto.memAddress }" size="30">
+				value="${emp.memAddress }" size="30">
 				<a href="javascript:sample4_execDaumPostcode();">주소 검색</a>
 			</td></tr>
 		<tr><td>상세주소</td>
 			<td><input type="text" name="detailAdd" 
-				value="${dto.detailAdd }"></td></tr>
+				value="${emp.detailAdd }"></td></tr>
 		<tr><td>연락처</td>
 			<td><input type="text" name="memPhone"
-			value="${dto.memPhone }"></td></tr>
+			value="${emp.memPhone }"></td></tr>
 		<tr><td>이메일</td>
 			<td><input type="text" name="memEmail" 
-			value="${dto.memEmail }"></td></tr>
+			value="${emp.memEmail }"></td></tr>
 		<tr><td>생년월일</td>
 			<td><input type="text" name="memBirth" 
-			value="${dto.memBirth }"></td></tr>
+			value="${emp.memBirth }"></td></tr>
 		<tr><td>성별</td>
-			<td><c:if test="${dto.memGender == 'M'}">남자</c:if>
-				<c:if test="${dto.memGender == 'F'}">여자</c:if>
+			<td><c:if test="${emp.memGender == 'M'}">남자</c:if>
+				<c:if test="${emp.memGender == 'F'}">여자</c:if>
 			</td></tr>
 		<tr><td>계좌번호</td>
 			<td><input type="text" name="memAccount" 
-								value="${dto.memAccount }"></td></tr>
+								value="${emp.memAccount }"></td></tr>
 		<tr><td>이메일 수신여부</td>
 			<td><input type="radio" name="memEmailCk" value="Y"
-				 	<c:if test="${dto.memEmailCk == 'Y'}">checked</c:if> 
+				 	<c:if test="${emp.memEmailCk == 'Y'}">checked</c:if> 
 				 >예			
 				<input type="radio" name="memEmailCk" value="N" 
-					<c:if test="${dto.memEmailCk == 'N'}">checked</c:if> 
+					<c:if test="${emp.memEmailCk == 'N'}">checked</c:if> 
 				>아니오</td></tr>
 		<tr><td colspan="2" align="center">
 				<input type="submit" value="수정 완료" />

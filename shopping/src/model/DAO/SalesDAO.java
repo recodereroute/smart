@@ -7,6 +7,8 @@ import java.util.List;
 import model.DTO.ClientSaleDTO;
 import model.DTO.CustomerTotalDTO;
 import model.DTO.DeliveryDTO;
+import model.DTO.ProductTotalDTO;
+import model.DTO.monthTotalDTO;
 
 public class SalesDAO extends DataBaseInfo{
 	public void deliveryCreate(DeliveryDTO dto) {
@@ -76,7 +78,80 @@ public class SalesDAO extends DataBaseInfo{
 		}
 		return dto;
 	}
+	public List<monthTotalDTO> monthTotal(){
+		List<monthTotalDTO> list = new ArrayList<monthTotalDTO>();
+		List<String> months = new ArrayList<String>();
+		// 몇월 달들이 들어가 있는지 먼저 검색
+		// 검색된 달들을 months 리스트에 넣어줌
+		sql = 	" select to_char(purchase_date,'mm') month" + 
+				" from purchase pu, purchase_list pl, products pr" + 
+				" where pu.purchase_num = pl.purchase_num and pl.prod_num = pr.prod_num" + 
+				" group by to_char(purchase_date,'mm')";
+		getConnect();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				months.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		// 검색된 월들을 이용해 구하고 싶은 값들을 뽑아냄
+		sql = 	" select prod_name, sum(purchase_qty), sum(purchase_tot_price)" + 
+				" from purchase pu, purchase_list pl, products pr" + 
+				" where pu.purchase_num = pl.purchase_num and pl.prod_num = pr.prod_num" + 
+				" and to_char(purchase_date,'mm') = ?" + 
+				" group by prod_name";
+		for(String month : months) {
+			getConnect();
+			 try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, month);
+				rs = pstmt.executeQuery();
+				while(rs.next()) {
+					monthTotalDTO dto = new monthTotalDTO();
+					dto.setProdName(rs.getString(1));
+					dto.setTotQty(rs.getString(2));
+					dto.setTotPrice(rs.getString(3));
+					dto.setMnth(month);
+					list.add(dto);
+				}
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				close();
+			}
+		}
+		return list;
+	}
 	
+	public List<ProductTotalDTO> productTotal(){
+		List<ProductTotalDTO> list = new ArrayList<ProductTotalDTO>();
+		sql = 	" select prod_name, sum(purchase_qty), sum(purchase_tot_price) " + 
+				" from purchase pu, purchase_list pl, products pr " + 
+				" where pu.purchase_num = pl.purchase_num and pl.prod_num = pr.prod_num " + 
+				" group by prod_name";
+		getConnect();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ProductTotalDTO dto = new ProductTotalDTO();
+				dto.setProdName(rs.getString(1));
+				dto.setTotQty(rs.getString(2));
+				dto.setTotPrice(rs.getString(3));
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		return list;
+	}
 	public List<CustomerTotalDTO> customerTotal(){
 		List<CustomerTotalDTO> list = new ArrayList<CustomerTotalDTO>();
 		sql = 	" select m.mem_id, mem_name, sum(purchase_tot_price), count(*), avg(purchase_tot_price) " + 

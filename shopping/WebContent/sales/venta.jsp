@@ -8,7 +8,12 @@
 <title>판매 현황</title>
 </head>
 <body>
-고객 판매 리스트 | <a href="customerTotal.vnt" target="_blank">고객별 판매 현황</a> | 상품별 판매 현황 | 연도별 판매 현황 | 월별 판매 현황
+
+<!-- 링크를 눌렀을때 새 탭을 띄우려면 target = "_blank" 를 주면됨 -->
+고객 판매 리스트 | <a href="customerTotal.vnt" target="_blank">고객별 판매 현황</a> |
+ 			  <a href= "productTotal.vnt" target="_blank">상품별 판매 현황</a> | 
+ 			  <a href= "annualTotal.vnt" target="_blank">연도별 판매 현황 | 
+ 			  <a href= "monthTotal.vnt" target="_blank">월별 판매 현황</a>
 
 <br />
 <form action="venta.vnt" method = "post" name = "frm">

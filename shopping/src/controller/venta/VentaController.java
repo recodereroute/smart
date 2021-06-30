@@ -31,6 +31,21 @@ public class VentaController extends HttpServlet
 			action.customerTotal(request);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("sales/customerTotal.jsp");
 			dispatcher.forward(request, response);
+		}else if(command.equals("/productTotal.vnt")) {
+			ProductTotalPage action = new ProductTotalPage();
+			action.productTotal(request);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("sales/productTotal.jsp");
+			dispatcher.forward(request, response);
+		}else if(command.equals("/monthTotal.vnt")) {
+			MonthTotalPage action = new MonthTotalPage();
+			action.monthTotal(request);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("sales/monthTotal.jsp");
+			dispatcher.forward(request, response);
+		}else if(command.equals("/annualTotal.vnt")) {
+			AnnualTotalPage action = new AnnualTotalPage();
+			action.annualTotal(request);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("sales/annualTotal.jsp");
+			dispatcher.forward(request, response);
 		}else if(command.equals("/createDelivery.vnt")) {
 			CreateDeliveryPage action = new CreateDeliveryPage();
 			action.excute(request);
@@ -39,7 +54,7 @@ public class VentaController extends HttpServlet
 		}else if(command.equals("deliveryOk.vnt")) {
 			DeliveryOkPage action = new DeliveryOkPage();
 			action.excute(request);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("venta.vnt");
 		}
 	}
 	

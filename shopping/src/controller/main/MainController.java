@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,12 +20,7 @@ public class MainController extends HttpServlet
 					throws ServletException, IOException {
 		String RequestURI = request.getRequestURI();
 		String contextPath = request.getContextPath();
-		String command = RequestURI.substring(
-				contextPath.length());
-		/// uri = /shopping/index.html
-		///       0123456789
-		/// context = /shopping
-		///           123456789
+		String command = RequestURI.substring(contextPath.length());
 		if(command.equals("/main.sm")) {
 			GoodsListPage action = new GoodsListPage();
 			action.goodsList(request);
@@ -32,9 +28,16 @@ public class MainController extends HttpServlet
 			dispatcher.forward(request, response);
 		}else if(command.equals("/login.sm")) {
 			LoginPage action = new LoginPage();
-			action.login(request);
+			action.login(request,response);
 			response.sendRedirect("main.sm");
 		}else if(command.equals("/logout.sm")) {
+			Cookie cookie = new Cookie("autoLogin","");//쿠키 이름은 autoLogin임
+			cookie.setPath("/");
+			cookie.setMaxAge(0);
+			//웹브라우저에 쿠키를 넘김
+			response.addCookie(cookie);
+			//쿠키를 먼저 날리고 세션을 날려야 함
+			
 			HttpSession session = request.getSession();
 			session.invalidate();
 			response.sendRedirect("main.sm");

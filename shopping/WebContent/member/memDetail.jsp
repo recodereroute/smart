@@ -9,20 +9,20 @@
 </head>
 <body>
 나의 상세정보<br />
-아이디 : ${dto.memId } <br />
-이름 : ${dto.memName } <br />
-생년월일 : ${dto.memBirth } <br />
-성별 : ${dto.memGender } <br />
-우편번호 : ${dto.postNumber } <br />
-주소 : ${dto.memAddress } <br />
-상세주소 : ${dto.detailAdd } <br />
-연락처 : ${dto.memPhone } <br />
-이메일 : ${dto.memEmail } <br />
-계좌번호 : ${dto.memAccount }  <br />
-수신여부 : <c:if test="${dto.memEmailCk == 'Y' }" > 
+아이디 : ${emp.memId } <br />
+이름 : ${emp.memName } <br />
+생년월일 : ${emp.memBirth } <br />
+성별 : ${emp.memGender } <br />
+우편번호 : ${emp.postNumber } <br />
+주소 : ${emp.memAddress } <br />
+상세주소 : ${emp.detailAdd } <br />
+연락처 : ${emp.memPhone } <br />
+이메일 : ${emp.memEmail } <br />
+계좌번호 : ${emp.memAccount }  <br />
+수신여부 : <c:if test="${emp.memEmailCk == 'Y' }" > 
 			이메일 수신 함
 		</c:if> 
-		<c:if test="${dto.memEmailCk == 'N'}" > 
+		<c:if test="${emp.memEmailCk == 'N'}" > 
 			이메일 수신 안함
 		</c:if>
 		<br />
